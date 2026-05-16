@@ -1,5 +1,6 @@
-explore.org
-shopch.jp
+domain:explore.org
+domain:shopch.jp
 lotteimall.com
 stingray.com
 amagi.tv
+domain:netlinkbroadcaster.com

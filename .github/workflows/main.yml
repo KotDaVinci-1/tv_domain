@@ -1,0 +1,58 @@
+name: Build v2ray dat
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # Позволяет запускать сборку вручную кнопкой
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Разрешаем скрипту записывать файл обратно в репозиторий
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Build dat file
+        run: |
+          # Устанавливаем официальный компилятор от v2fly
+          go install github.com/v2fly/v2sitedat@latest
+          
+          # Создаем временную папку. Компилятор берет имя тега из имени файла.
+          # Чтобы тег назывался "tv", файл внутри папки должен называться "tv" (без .txt)
+          mkdir -p site
+          if [ -f "tv.txt" ]; then
+            cp tv.txt site/tv
+          elif [ -f "tv" ]; then
+            cp tv site/tv
+          fi
+          
+          # Компилируем текстовый список в бинарный myrules.dat
+          $(go env GOPATH)/bin/v2sitedat -dat myrules.dat -dir site
+
+      - name: Deploy to Release Branch
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Сохраняем скомпилированный файл во временную директорию
+          mkdir publish
+          cp myrules.dat publish/
+          
+          # Переключаемся на чистую ветку 'release' (создастся, если её нет)
+          git checkout --orphan release
+          git rm -rf .
+          mv publish/myrules.dat .
+          rm -rf publish
+          
+          # Фиксируем изменения и принудительно отправляем в ветку release
+          git add myrules.dat
+          git commit -m "Update myrules.dat"
+          git push -f origin release

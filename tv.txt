@@ -1,3 +1,3 @@
 netlinkbroadcaster.com
-domain:netlinkbroadcaster.com
+
 seatv.netlinkbroadcaster.com

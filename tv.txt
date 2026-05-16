@@ -1,9 +1,10 @@
 malimarcdn.com
 
-netlinkbroadcaster.com
+domain:malimarcdn.com
 
 livefta.malimarcdn.com
 
+netlinkbroadcaster.com
 explore.org
 shopch.jp
 lotteimall.com

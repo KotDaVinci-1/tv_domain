@@ -22,20 +22,26 @@ jobs:
 
       - name: Build dat file
         run: |
-          # Устанавливаем официальный компилятор от v2fly
-          go install github.com/v2fly/v2sitedat@latest
+          # Клонируем официальный инструмент для сборки geosite-файлов
+          git clone --depth=1 https://github.com/v2fly/domain-list-community.git dlc
           
-          # Создаем временную папку. Компилятор берет имя тега из имени файла.
-          # Чтобы тег назывался "tv", файл внутри папки должен называться "tv" (без .txt)
-          mkdir -p site
+          # Создаем временную папку для наших кастомных списков
+          mkdir -p custom_data
+          
+          # Копируем ваш файл доменов. Имя файла внутри папки станет именем тега (tv)
           if [ -f "tv.txt" ]; then
-            cp tv.txt site/tv
+            cp tv.txt custom_data/tv
           elif [ -f "tv" ]; then
-            cp tv site/tv
+            cp tv custom_data/tv
           fi
           
-          # Компилируем текстовый список в бинарный myrules.dat
-          $(go env GOPATH)/bin/v2sitedat -dat myrules.dat -dir site
+          # Запускаем официальный компилятор, указав путь к нашей папке с файлом
+          cd dlc
+          go run ./ --datapath=../custom_data
+          
+          # Возвращаем готовый файл в корень проекта и переименовываем в myrules.dat
+          cd ..
+          cp dlc/dlc.dat ./myrules.dat
 
       - name: Deploy to Release Branch
         run: |
@@ -46,13 +52,13 @@ jobs:
           mkdir publish
           cp myrules.dat publish/
           
-          # Переключаемся на чистую ветку 'release' (создастся, если её нет)
+          # Переключаемся на чистую ветку 'release'
           git checkout --orphan release
           git rm -rf .
           mv publish/myrules.dat .
           rm -rf publish
           
-          # Фиксируем изменения и принудительно отправляем в ветку release
+          # Фиксируем изменения и отправляем в ветку release
           git add myrules.dat
           git commit -m "Update myrules.dat"
           git push -f origin release

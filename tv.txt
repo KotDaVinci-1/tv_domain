@@ -5,3 +5,4 @@ stingray.com
 amagi.tv
 domain:netlinkbroadcaster.com
 domain:malimarcdn.com
+seatv.netlinkbroadcaster.com

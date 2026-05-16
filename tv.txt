@@ -1,2 +1,6 @@
 domain:shopch.jp
 malimarcdn.com
+teatv.sdp
+livefta.malimarcdn.com
+domain:malimarcdn.com
+tv.legal

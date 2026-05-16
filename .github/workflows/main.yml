@@ -4,13 +4,17 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch: # Позволяет запускать сборку вручную кнопкой
+  workflow_dispatch:
+
+# Исправляет первое предупреждение, принудительно включая Node.js 24
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Разрешаем скрипту записывать файл обратно в репозиторий
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,27 +23,22 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: 'stable'
+          cache: false # Исправляет второе предупреждение (отключает поиск go.sum)
 
       - name: Build dat file
         run: |
-          # Клонируем официальный инструмент для сборки geosite-файлов
           git clone --depth=1 https://github.com/v2fly/domain-list-community.git dlc
           
-          # Создаем временную папку для наших кастомных списков
           mkdir -p custom_data
-          
-          # Копируем ваш файл доменов. Имя файла внутри папки станет именем тега (tv)
           if [ -f "tv.txt" ]; then
             cp tv.txt custom_data/tv
           elif [ -f "tv" ]; then
             cp tv custom_data/tv
           fi
           
-          # Запускаем официальный компилятор, указав путь к нашей папке с файлом
           cd dlc
           go run ./ --datapath=../custom_data
           
-          # Возвращаем готовый файл в корень проекта и переименовываем в myrules.dat
           cd ..
           cp dlc/dlc.dat ./myrules.dat
 
@@ -48,17 +47,14 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Сохраняем скомпилированный файл во временную директорию
           mkdir publish
           cp myrules.dat publish/
           
-          # Переключаемся на чистую ветку 'release'
           git checkout --orphan release
           git rm -rf .
           mv publish/myrules.dat .
           rm -rf publish
           
-          # Фиксируем изменения и отправляем в ветку release
           git add myrules.dat
           git commit -m "Update myrules.dat"
           git push -f origin release

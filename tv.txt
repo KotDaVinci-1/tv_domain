@@ -3,5 +3,5 @@ shopch.jp
 lotteimall.com
 stingray.com
 amagi.tv
-netlinkbroadcaster.com
-malimarcdn.com
+domain:netlinkbroadcaster.com
+domain:malimarcdn.com

@@ -3,4 +3,4 @@ domain:shopch.jp
 lotteimall.com
 stingray.com
 amagi.tv
-domain:netlinkbroadcaster.com
+seatv.netlinkbroadcaster.com

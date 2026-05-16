@@ -6,5 +6,4 @@ lotteimall.com
 stingray.com
 amagi.tv
 nowcdn.co.kr
-fastpic.org
-imgur.com
+postimg.cc

@@ -7,3 +7,4 @@ stingray.com
 amagi.tv
 nowcdn.co.kr
 postimg.cc
+cdn.cra.cz

@@ -11,3 +11,4 @@ cdn.cra.cz
 fiptv.org
 dzeninfra.ru
 ntvplus.tv
+tmsimg.com

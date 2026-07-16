@@ -10,4 +10,3 @@ postimg.cc
 cdn.cra.cz
 fiptv.org
 d1flvb4iqlercm.cloudfront.net
-resizer.mail.ru

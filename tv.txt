@@ -1,3 +1,4 @@
+.com
 yt3.ggpht.com
 yt4.ggpht.com
 yt3.googleusercontent.com
@@ -8,6 +9,7 @@ wide-youtube.l.google.com
 youtube-nocookie.com
 youtube-ui.l.google.com
 youtube.com
+www.youtube.com
 youtubeembeddedplayer.googleapis.com
 youtubekids.com
 youtube.googleapis.com
